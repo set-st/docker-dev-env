@@ -18,6 +18,8 @@ RUN apt-get update && apt-get install -y \
         libjpeg62-turbo-dev \
         libmcrypt-dev \
         libpng12-dev \
+    && pecl install redis-3.1.1 \
+    && echo "extension=redis.so" > /usr/local/etc/php/conf.d/redis.ini \
     && ln -s /usr/lib/x86_64-linux-gnu/libsybdb.a /usr/lib/ \
     && docker-php-ext-install -j$(nproc) iconv mcrypt mbstring mysqli pdo_mysql pdo_dblib zip \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
