@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libmcrypt-dev \
-        libpng12-dev \
+        libpng-dev \
     && pecl install redis-3.1.1 \
     && echo "extension=redis.so" > /usr/local/etc/php/conf.d/redis.ini \
     && ln -s /usr/lib/x86_64-linux-gnu/libsybdb.a /usr/lib/ \

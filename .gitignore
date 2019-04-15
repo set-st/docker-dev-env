@@ -11,4 +11,3 @@ composer.lock
 www/
 mysql/
 logs/
-hosts/
