@@ -1,5 +1,5 @@
 # Для начала указываем исходный образ, он будет использован как основа
-FROM php:7.1-fpm
+FROM php:7.4-fpm
 # Необязательная строка с указанием автора образа
 MAINTAINER PHPtoday.ru <info@phptoday.ru>
 
@@ -7,24 +7,44 @@ MAINTAINER PHPtoday.ru <info@phptoday.ru>
 # В данном случае мы установим некоторые зависимости и модули PHP.
 # Для установки модулей используем команду docker-php-ext-install.
 # На каждый RUN создается новый слой в образе, поэтому рекомендуется объединять команды.
+#RUN apt-get update && apt-get install -y \
+#        freetds-bin \
+#        freetds-dev \
+#        freetds-common \
+#        curl \
+#        wget \
+#        git \
+#        libfreetype6-dev \
+#        libjpeg62-turbo-dev \
+#        libmcrypt-dev \
+#        libpng-dev \
+#        libonig-dev \
+#        libzip-dev \
+#    && pecl install -o -f redis \
+#    && rm -rf /tmp/pear \
+#    && echo "extension=redis.so" > /usr/local/etc/php/conf.d/redis.ini \
+#    && pecl install mcrypt-1.0.3 \
+#    && docker-php-ext-enable mcrypt \
+#    && ln -s /usr/lib/x86_64-linux-gnu/libsybdb.a /usr/lib/ \
+#    && docker-php-ext-install -j$(nproc) iconv mbstring mysqli \
+#    && docker-php-ext-configure mcrypt gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+#    && docker-php-ext-install -j$(nproc) gd pdo_dblib pdo_mysql zip
+
 RUN apt-get update && apt-get install -y \
-        freetds-bin \
-        freetds-dev \
-        freetds-common \
+        libfreetype6-dev \
+        libjpeg62-turbo-dev \
+        libpng-dev \
         curl \
         wget \
         git \
-        libfreetype6-dev \
-        libjpeg62-turbo-dev \
-        libmcrypt-dev \
-        libpng-dev \
-    && pecl install redis-3.1.1 \
-    && echo "extension=redis.so" > /usr/local/etc/php/conf.d/redis.ini \
-    && ln -s /usr/lib/x86_64-linux-gnu/libsybdb.a /usr/lib/ \
-    && docker-php-ext-install -j$(nproc) iconv mcrypt mbstring mysqli pdo_mysql pdo_dblib zip \
-    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install -j$(nproc) gd
-    
+        libzip-dev \
+        libonig-dev \
+    && pecl install redis-5.1.1 \
+    && docker-php-ext-enable redis \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd mbstring mysqli pdo_mysql zip
+
+#pdo_dblib    
 # Куда же без composer'а.
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
